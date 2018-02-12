@@ -24,26 +24,21 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510)
         );
         getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12, 0), 2000);
-//        .toLocalDate();
-//        .toLocalTime();
+
     }
 
     public static List<UserMealWithExceed> getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
         List<UserMealWithExceed> result = new ArrayList<>();
         Map<LocalDate, Integer> caloriesPerDayMap = new HashMap<>();
-        int sumOfCalories;
 
         for (UserMeal userMeal : mealList) {
             LocalDate localDate = userMeal.getDateTime().toLocalDate();
-
-            caloriesPerDayMap.put(localDate, caloriesPerDayMap.get(localDate) != null
-                                ? caloriesPerDayMap.get(localDate) + userMeal.getCalories()
-                                : userMeal.getCalories());
+            caloriesPerDayMap.merge(localDate, userMeal.getCalories(), Integer::sum);
         }
 
         for (UserMeal userMeal : mealList) {
             if (TimeUtil.isBetween(userMeal.getDateTime().toLocalTime(), startTime, endTime)) {
-                sumOfCalories = caloriesPerDayMap.get(userMeal.getDateTime().toLocalDate());
+                int sumOfCalories = caloriesPerDayMap.get(userMeal.getDateTime().toLocalDate());
                 result.add(new UserMealWithExceed(userMeal.getDateTime(), userMeal.getDescription(), userMeal.getCalories(), sumOfCalories > caloriesPerDay));
             }
         }
