@@ -49,13 +49,12 @@ public class UserMealsUtil {
         Map<LocalDate, Integer> caloriesPerDayMap = mealList.stream()
                 .collect(Collectors.toMap(
                         k -> k.getDateTime().toLocalDate(),
-                        UserMeal::getCalories,
-                        Integer::sum,
-                        HashMap::new));
+                        v -> v.getCalories(),
+                        Integer::sum));
 
         return mealList.stream()
-                .filter((v) -> TimeUtil.isBetween(v.getDateTime().toLocalTime(), startTime, endTime))
-                .map((v) -> new UserMealWithExceed(v.getDateTime(), v.getDescription(), v.getCalories(), (caloriesPerDayMap.get(v.getDateTime().toLocalDate()) > caloriesPerDay)))
+                .filter(v -> TimeUtil.isBetween(v.getDateTime().toLocalTime(), startTime, endTime))
+                .map(v -> new UserMealWithExceed(v.getDateTime(), v.getDescription(), v.getCalories(), (caloriesPerDayMap.get(v.getDateTime().toLocalDate()) > caloriesPerDay)))
                 .collect(Collectors.toList());
     }
 }
