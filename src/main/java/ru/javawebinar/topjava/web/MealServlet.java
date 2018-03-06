@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class MealServlet extends HttpServlet {
     private MealDao mealDao = new MealDaoMemoryImpl();
@@ -18,21 +19,21 @@ public class MealServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
 
-        if (" ".equals(request.getParameter("id"))) {
+        if ("".equals(request.getParameter("id"))) {
             Meal meal = new Meal(
                     LocalDateTime.parse(request.getParameter("date")),
                     request.getParameter("description"),
-                    Integer.parseInt(request.getParameter("calories")),
-                    MealsUtil.getIdIterator().getAndIncrement());
+                    Integer.parseInt(request.getParameter("calories"))
+                    );
             mealDao.add(meal);
             response.sendRedirect("meals");
         } else {
-            Meal meal = mealDao.getById(Integer.parseInt(request.getParameter("id")));
-            int index = mealDao.getListIndex(meal);
+            int id = Integer.parseInt(request.getParameter("id"));
+            Meal meal = mealDao.getById(id);
             meal.setCalories(Integer.parseInt(request.getParameter("calories")));
             meal.setDateTime(LocalDateTime.parse(request.getParameter("date")));
             meal.setDescription(request.getParameter("description"));
-            mealDao.update(index, meal);
+            mealDao.update(id, meal);
             response.sendRedirect("meals");
         }
     }
@@ -50,7 +51,7 @@ public class MealServlet extends HttpServlet {
                 request.setAttribute("meal", meal);
             }
         }
-        request.setAttribute("listMeals", MealsUtil.getListWithExceeded(MealsUtil.meals, 2000));
+        request.setAttribute("listMeals", MealsUtil.getFilteredWithExceeded(mealDao.getAll(), LocalTime.MIN, LocalTime.MAX, 2000));
         request.getRequestDispatcher("/meals.jsp").forward(request, response);
     }
 }

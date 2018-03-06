@@ -13,7 +13,7 @@ public class MealWithExceed {
 
     private final int id;
 
-    public MealWithExceed(LocalDateTime dateTime, String description, int calories, boolean exceed, int id) {
+    public MealWithExceed(int id, LocalDateTime dateTime, String description, int calories, boolean exceed) {
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;

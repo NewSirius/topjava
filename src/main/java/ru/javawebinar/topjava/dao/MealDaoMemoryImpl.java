@@ -1,42 +1,52 @@
 package ru.javawebinar.topjava.dao;
 
 import ru.javawebinar.topjava.model.Meal;
-import ru.javawebinar.topjava.util.MealsUtil;
 
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MealDaoMemoryImpl implements MealDao {
+
+    private static AtomicInteger idCount = new AtomicInteger(0);
+    private final Map<Integer, Meal> mealsMap = new ConcurrentHashMap<>();
+
+    {
+        mealsMap.put(idCount.get(), new Meal(idCount.get(), LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500));
+        mealsMap.put(idCount.incrementAndGet(), new Meal(idCount.get(), LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000));
+        mealsMap.put(idCount.incrementAndGet(), new Meal(idCount.get(), LocalDateTime.of(2015, Month.MAY, 30, 20, 0), "Ужин", 500));
+        mealsMap.put(idCount.incrementAndGet(), new Meal(idCount.get(), LocalDateTime.of(2015, Month.MAY, 31, 10, 0), "Завтрак", 1000));
+        mealsMap.put(idCount.incrementAndGet(), new Meal(idCount.get(), LocalDateTime.of(2015, Month.MAY, 31, 13, 0), "Обед", 500));
+        mealsMap.put(idCount.incrementAndGet(), new Meal(idCount.get(), LocalDateTime.of(2015, Month.MAY, 31, 20, 0), "Ужин", 510));
+    }
+
     @Override
     public void add(Meal meal) {
-        MealsUtil.meals.add(meal);
+        meal.setId(idCount.incrementAndGet());
+        mealsMap.put(idCount.get(), meal);
     }
 
     @Override
     public void remove(int id) {
-        MealsUtil.meals.removeIf(meal -> meal.getId() == id);
+        mealsMap.remove(id);
     }
 
     @Override
-    public void update(int id, Meal meal) {
-
-        MealsUtil.meals.set(id, meal);
-
+    public Meal update(int id, Meal meal) {
+        return mealsMap.put(id, meal);
     }
 
     @Override
     public Meal getById(int id) {
-        List<Meal> list = MealsUtil.meals.stream()
-                .filter(meal -> meal.getId() == id)
-                .collect(Collectors.toList());
-        return list.get(0);
-
+        return mealsMap.get(id);
     }
 
     @Override
-    public int getListIndex(Meal meal) {
-        return MealsUtil.meals.indexOf(meal);
+    public List<Meal> getAll() {
+        return new ArrayList<>(mealsMap.values());
     }
-
-
 }

@@ -51,7 +51,7 @@
 <br>
 
 <form method="POST" action='meals' name="AddMeal">
-    <input type = "hidden" name = "id" value = "${meal.id == null ? " " : meal.id}" >
+    <input type = "hidden" name = "id" value = "${meal.id}" >
     Date/Time:<br>
     <input type="datetime-local" value="${meal.dateTime}" name="date"><br>
     Description:<br>
