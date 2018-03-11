@@ -25,9 +25,9 @@ public class MealDaoMemoryImpl implements MealDao {
     }
 
     @Override
-    public void add(Meal meal) {
+    public Meal add(Meal meal) {
         meal.setId(idCount.incrementAndGet());
-        mealsMap.put(idCount.get(), meal);
+        return mealsMap.put(idCount.get(), meal);
     }
 
     @Override
@@ -36,8 +36,8 @@ public class MealDaoMemoryImpl implements MealDao {
     }
 
     @Override
-    public Meal update(int id, Meal meal) {
-        return mealsMap.put(id, meal);
+    public Meal update(Meal meal) {
+        return mealsMap.put(meal.getId(), meal);
     }
 
     @Override

@@ -14,28 +14,36 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class MealServlet extends HttpServlet {
-    private MealDao mealDao = new MealDaoMemoryImpl();
+    private MealDao mealDao;
+
+    @Override
+    public void init() throws ServletException {
+        mealDao = new MealDaoMemoryImpl();
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         request.setCharacterEncoding("UTF-8");
 
+        String date = request.getParameter("date");
+        String description = request.getParameter("description");
+        String calories = request.getParameter("calories");
+
         if ("".equals(request.getParameter("id"))) {
             Meal meal = new Meal(
-                    LocalDateTime.parse(request.getParameter("date")),
-                    request.getParameter("description"),
-                    Integer.parseInt(request.getParameter("calories"))
+                    LocalDateTime.parse(date),
+                    description,
+                    Integer.parseInt(calories)
                     );
             mealDao.add(meal);
-            response.sendRedirect("meals");
         } else {
             int id = Integer.parseInt(request.getParameter("id"));
             Meal meal = mealDao.getById(id);
-            meal.setCalories(Integer.parseInt(request.getParameter("calories")));
-            meal.setDateTime(LocalDateTime.parse(request.getParameter("date")));
-            meal.setDescription(request.getParameter("description"));
-            mealDao.update(id, meal);
-            response.sendRedirect("meals");
+            meal.setCalories(Integer.parseInt(calories));
+            meal.setDateTime(LocalDateTime.parse(date));
+            meal.setDescription(description);
+            mealDao.update(meal);
         }
+        response.sendRedirect("meals");
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
