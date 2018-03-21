@@ -17,7 +17,6 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static ru.javawebinar.topjava.MealTestData.MEAL1;
 import static ru.javawebinar.topjava.MealTestData.MEAL2;
 import static ru.javawebinar.topjava.UserTestData.ADMIN_ID;
@@ -44,8 +43,8 @@ public class MealServiceTest {
 
     @Test
     public void get() {
-        Meal mealExpected = new Meal(1, LocalDateTime.of(2015, Month.MAY, 30, 7, 5, 6), "завтрак", 500);
-        assertMatch(service.get(1, USER_ID), mealExpected);
+        Meal mealExpected = new Meal(MEAL1.getId(), LocalDateTime.of(2018, Month.MARCH, 21, 7, 0, 0), "завтрак", 500);
+        assertMatch(service.get(MEAL1.getId(), USER_ID), mealExpected);
     }
 
     @Test(expected = NotFoundException.class)
@@ -55,8 +54,10 @@ public class MealServiceTest {
 
     @Test
     public void delete() {
-        service.delete(1, USER_ID);
-        assertMatch(service.getAll(USER_ID), Arrays.asList(MEAL2));
+        service.delete(MEAL4.getId(), USER_ID);
+        List<Meal> expectedList = Arrays.asList(MEAL1, MEAL2, MEAL3, MEAL5, MEAL6, MEAL7);
+        sortByDate(expectedList);
+        assertMatch(service.getAll(USER_ID), expectedList);
     }
 
     @Test(expected = NotFoundException.class)
@@ -66,17 +67,17 @@ public class MealServiceTest {
 
     @Test
     public void getBetweenDates() {
-        List<Meal> actual = service.getBetweenDates(LocalDate.of(2015, 5, 30), LocalDate.of(2015,5,30), USER_ID);
-        List<Meal> expected = Arrays.asList(MEAL1);
+        List<Meal> actual = service.getBetweenDates(LocalDate.of(2018, 3, 21), LocalDate.of(2018,3,21), USER_ID);
+        List<Meal> expected = Arrays.asList(MEAL1, MEAL2, MEAL3);
         sortByDate(expected);
         assertMatch(actual, expected);
     }
 
     @Test
     public void getBetweenDateTimes() {
-        List<Meal> actual = service.getBetweenDateTimes(LocalDateTime.of(2015, Month.MAY, 31, 7, 5, 6),
-                LocalDateTime.of(2015, Month.MAY, 31, 23, 5, 6), USER_ID);
-        List<Meal> expected = Arrays.asList(MEAL2);
+        List<Meal> actual = service.getBetweenDateTimes(LocalDateTime.of(2018, Month.MARCH, 21, 7, 0, 0),
+                LocalDateTime.of(2018, Month.MARCH, 22, 13, 0, 0), USER_ID);
+        List<Meal> expected = Arrays.asList(MEAL1, MEAL2, MEAL3, MEAL4, MEAL5);
         sortByDate(expected);
         assertMatch(actual, expected);
     }
@@ -84,7 +85,7 @@ public class MealServiceTest {
     @Test
     public void getAll() {
         List<Meal> listActual = service.getAll(USER_ID);
-        List<Meal> listExpected = Arrays.asList(MEAL1, MEAL2);
+        List<Meal> listExpected = Arrays.asList(MEAL1, MEAL2, MEAL3, MEAL4, MEAL5, MEAL6, MEAL7);
         sortByDate(listExpected);
         assertMatch(listActual, listExpected);
     }
@@ -96,7 +97,7 @@ public class MealServiceTest {
     expected.setCalories(200);
 
     service.update(expected, USER_ID);
-    assertMatch(service.get(1, USER_ID), expected);
+    assertMatch(service.get(MEAL1.getId(), USER_ID), expected);
     }
 
     @Test(expected = NotFoundException.class)
@@ -106,11 +107,11 @@ public class MealServiceTest {
 
     @Test
     public void create() {
-        Meal meal = new Meal(null, LocalDateTime.of(2018, Month.MARCH, 20, 11, 34, 0), "завтрак", 666);
+        Meal meal = new Meal(null, LocalDateTime.of(2018, Month.MARCH, 23, 11, 34, 0), "завтрак", 666);
         Meal created = service.create(meal, USER_ID);
         meal.setId(created.getId());
-        List<Meal> expectedList = Arrays.asList(MEAL1, MEAL2, meal);
+        List<Meal> expectedList = Arrays.asList(meal, MEAL1, MEAL2, MEAL3, MEAL4, MEAL5, MEAL6, MEAL7 );
         sortByDate(expectedList);
-        assertThat(service.getAll(USER_ID)).isEqualTo(expectedList);
+        assertMatch(service.getAll(USER_ID), expectedList);
     }
 }
