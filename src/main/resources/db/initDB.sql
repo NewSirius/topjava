@@ -35,4 +35,4 @@ CREATE TABLE meals
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
-CREATE UNIQUE INDEX meals_unique_uindex ON public.meals (datetime, user_id);
+CREATE UNIQUE INDEX meals_unique_uindex ON public.meals (user_id, datetime);
