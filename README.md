@@ -1,4 +1,6 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/1f9504e4f58e4dd78202602a46d72fcc)](https://app.codacy.com/app/NewSirius/topjava/dashboard)
+[![Dependency Status](https://www.versioneye.com/user/projects/5ab604f10fb24f44b0618e66/badge.svg?style=flat-square)](https://www.versioneye.com/user/projects/5ab604f10fb24f44b0618e66)
+[![Build Status](https://travis-ci.org/NewSirius/topjava.svg?branch=master)](https://travis-ci.org/NewSirius/topjava)
 
 Java Enterprise Online Project 
 ===============================
