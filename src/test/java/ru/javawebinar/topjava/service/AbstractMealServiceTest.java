@@ -68,6 +68,7 @@ public abstract class AbstractMealServiceTest {
                 "\n---------------------------------" +
                 results +
                 "\n---------------------------------");
+        results.setLength(0);
     }
 
     @Autowired
@@ -95,6 +96,12 @@ public abstract class AbstractMealServiceTest {
     @Test
     public void get() throws Exception {
         Meal actual = service.get(ADMIN_MEAL_ID, ADMIN_ID);
+        assertMatch(actual, ADMIN_MEAL1);
+    }
+
+    @Test
+    public void getWithUser() throws Exception {
+        Meal actual = service.getWithUser(ADMIN_MEAL_ID, ADMIN_ID);
         assertMatch(actual, ADMIN_MEAL1);
     }
 
