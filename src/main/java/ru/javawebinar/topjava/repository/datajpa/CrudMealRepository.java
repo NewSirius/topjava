@@ -15,7 +15,6 @@ public interface CrudMealRepository extends JpaRepository<Meal, Integer> {
 
     @Override
     @Transactional
-    @Modifying
     Meal save(Meal meal);
 
     @Transactional
