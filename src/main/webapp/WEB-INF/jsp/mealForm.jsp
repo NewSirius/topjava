@@ -12,10 +12,10 @@
     <h3><a href="index.html"><spring:message code="app.home"/></a></h3>
     <spring:message code="meal.create" var="createText"/>
     <spring:message code="meal.edit" var="editText"/>
-    <h2>${param.action == 'create' ? createText : editText}</h2>
+    <h2>${createTag == true ? createText : editText}</h2>
     <hr>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
-    <form method="post" action="meals">
+    <form method="post" action="${pageContext.request.contextPath}/meals/mealForm">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt><spring:message code="meal.date"/>:</dt>
@@ -33,5 +33,6 @@
         <button onclick="window.history.back()" type="button"><spring:message code="app.cancel"/></button>
     </form>
 </section>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>

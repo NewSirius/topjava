@@ -12,17 +12,14 @@ import javax.validation.ConstraintViolationException;
 import java.util.Collections;
 import java.util.Date;
 
-public abstract class AbstractJPAUserServiceTest extends AbstractUserServiceTest {
-
-    @Autowired
-    private CacheManager cacheManager;
+public abstract class AbstractJpaUserServiceTest extends AbstractUserServiceTest {
 
     @Autowired
     protected JpaUtil jpaUtil;
 
     @Before
     public void setUp() throws Exception {
-        cacheManager.getCache("users").clear();
+        super.setUp();
         jpaUtil.clear2ndLevelHibernateCache();
     }
 

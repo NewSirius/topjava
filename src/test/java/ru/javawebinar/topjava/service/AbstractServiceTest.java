@@ -48,13 +48,8 @@ abstract public class AbstractServiceTest {
         SLF4JBridgeHandler.install();
     }
 
-    public boolean isJDBCActiveProfile()    {
-       for (String profile : environment.getActiveProfiles())   {
-           if (Profiles.JDBC.equalsIgnoreCase(profile)) {
-               return true;
-           }
-       }
-        return false;
+    public boolean isJdbcActiveProfile()    {
+        return environment.acceptsProfiles("jdbc");
     }
 
     //  Check root cause in JUnit: https://github.com/junit-team/junit4/pull/778

@@ -21,6 +21,4 @@ public interface UserService {
     List<User> getAll();
 
     User getWithMeals(int id);
-
-    void invalidateCache();
 }
