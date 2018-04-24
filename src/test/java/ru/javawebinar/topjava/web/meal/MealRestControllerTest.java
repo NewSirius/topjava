@@ -48,7 +48,13 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(contentJson(MEAL6, MEAL5, MEAL4, MEAL3, MEAL2, MEAL1));
+                .andExpect(contentJson(
+                        MealsUtil.createWithExceed(MEAL6, true),
+                        MealsUtil.createWithExceed(MEAL5, true),
+                        MealsUtil.createWithExceed(MEAL4, true),
+                        MealsUtil.createWithExceed(MEAL3, false),
+                        MealsUtil.createWithExceed(MEAL2, false),
+                        MealsUtil.createWithExceed(MEAL1, false)));
     }
 
     @Test
@@ -80,14 +86,14 @@ public class MealRestControllerTest extends AbstractControllerTest {
 
     @Test
     public void getBetween() throws Exception {
-        String startDateTime = "2015-01-03T10:15:30";
-        String endDateTime = "2015-12-04T21:15:30";
+        LocalDateTime startLocalDateTime = LocalDateTime.parse("2015-01-03T10:15:30");
+        LocalDateTime endLocalDateTime = LocalDateTime.parse("2015-12-04T21:15:30");
 
         ResultActions action = mockMvc.perform(post(MEAL_URL + "filter")
-                .param("startDate", startDateTime)
-                .param("startTime", startDateTime)
-                .param("endDate", endDateTime)
-                .param("endTime", endDateTime)
+                .param("startDate", startLocalDateTime.toLocalDate().toString())
+                .param("startTime", startLocalDateTime.toLocalTime().toString())
+                .param("endDate", endLocalDateTime.toLocalDate().toString())
+                .param("endTime", endLocalDateTime.toLocalTime().toString())
         )
                 .andDo(print())
                 .andExpect(status().isOk())
