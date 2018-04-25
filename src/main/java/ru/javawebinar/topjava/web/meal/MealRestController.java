@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.to.MealWithExceed;
-import ru.javawebinar.topjava.util.annotations.LocalDateAnnotation;
-import ru.javawebinar.topjava.util.annotations.LocalTimeAnnotation;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -16,12 +14,12 @@ import java.time.LocalTime;
 import java.util.List;
 
 @RestController
-@RequestMapping(MealRestController.MEAL_URL)
+@RequestMapping(value = MealRestController.MEAL_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class MealRestController extends AbstractMealController {
     final static String MEAL_URL = "/rest/meals";
 
     @Override
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}")
     public Meal get(@PathVariable("id") int id) {
         return super.get(id);
     }
@@ -34,12 +32,12 @@ public class MealRestController extends AbstractMealController {
     }
 
     @Override
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping()
     public List<MealWithExceed> getAll() {
         return super.getAll();
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Meal> createWithLocation(@RequestBody Meal meal) {
         Meal created = super.create(meal);
 
@@ -58,18 +56,11 @@ public class MealRestController extends AbstractMealController {
 
 
     @Override
-    @PostMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<MealWithExceed> getBetween(@RequestParam(value = "startDate", required = false)
-                                           @LocalDateAnnotation LocalDate startDate,
-
-                                           @RequestParam(value = "startTime", required = false)
-                                           @LocalTimeAnnotation LocalTime startTime,
-
-                                           @RequestParam(value = "endDate", required = false)
-                                           @LocalDateAnnotation LocalDate endDate,
-
-                                           @RequestParam(value = "endTime", required = false)
-                                           @LocalTimeAnnotation LocalTime endTime) {
+    @PostMapping(value = "/filter")
+    public List<MealWithExceed> getBetween(@RequestParam(value = "startDate", required = false) LocalDate startDate,
+                                           @RequestParam(value = "startTime", required = false) LocalTime startTime,
+                                           @RequestParam(value = "endDate", required = false) LocalDate endDate,
+                                           @RequestParam(value = "endTime", required = false) LocalTime endTime) {
         return super.getBetween(startDate, startTime, endDate, endTime);
     }
 }
