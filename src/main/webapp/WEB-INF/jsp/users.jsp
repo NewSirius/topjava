@@ -79,10 +79,9 @@
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
+<jsp:include page="fragments/notyMessages.jsp"/>
 <script type="text/javascript">
-    var i18n = [];
     i18n["addTitle"] = '<spring:message code="user.add"/>';
     i18n["editTitle"] = '<spring:message code="user.edit"/>';
 </script>
-<jsp:include page="fragments/notyMessages.jsp"/>
 </html>

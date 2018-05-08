@@ -23,7 +23,7 @@ $(function () {
                 "data": "dateTime",
                 "render": function (date, type, row) {
                     if (type === "display") {
-                        return date.substring(0,10)+ " " + date.substring(11,19);
+                        return date.substring(0, 10) + " " + date.substring(11, 19);
                     }
                     return date;
                 }
@@ -56,4 +56,8 @@ $(function () {
         }
     });
     makeEditable();
+
+    $('#dateTime').datetimepicker({
+        format: 'Y-m-d H:i'
+    });
 });
