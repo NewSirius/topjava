@@ -343,6 +343,13 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <!--Other-->
+        <dependency>
+            <groupId>com.sun.xml.ws</groupId>
+            <artifactId>jaxws-rt</artifactId>
+            <version>2.2.1</version>
+        </dependency>
+
     </dependencies>
 
     <profiles>
