@@ -17,6 +17,8 @@ import javax.validation.Valid;
 @Controller
 public class RootController extends AbstractUserController {
 
+
+
     @GetMapping("/")
     public String root() {
         return "redirect:meals";
